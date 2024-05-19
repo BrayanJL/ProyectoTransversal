@@ -158,7 +158,10 @@ public class AlumnoData {
                 int fila = ps.executeUpdate();
                 if (fila == 1) {
                     JOptionPane.showMessageDialog(null, "Se elimino el alumno");
+                } else {
+                    JOptionPane.showMessageDialog(null, "El alumno no existe");
                 }
+                
             } catch (SQLException e) {
             }
             

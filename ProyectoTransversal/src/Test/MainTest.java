@@ -55,11 +55,12 @@ public class MainTest {
         }
         
         System.out.println("/////// eliminar alumno:");
+   
+        ad.eliminarAlumno(alumno4.getIdAlumno());
         
         for (Alumno a : ad.listarAlumnos()) {
             System.out.println(a.toString());
         }
         
-        ad.eliminarAlumno(alumno4.getIdAlumno());
     }
 }
