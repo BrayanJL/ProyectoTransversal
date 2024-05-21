@@ -1,7 +1,9 @@
 package Test;
 import AccesoADatos.AlumnoData;
+import AccesoADatos.InscripcionData;
 import AccesoADatos.MateriaData;
 import Entidades.Alumno;
+import Entidades.Inscripcion;
 import Entidades.Materia;
 import java.time.LocalDate;
 import java.time.Month;
@@ -115,6 +117,36 @@ public class MainTest {
         
         for (Materia a : md.listarMaterias()) {
             System.out.println(a.toString());
+        }
+        
+        System.out.println("");
+        
+        System.out.println("///////////////////// PRUEBAS INSCRIPCION:");
+        
+        InscripcionData insData = new InscripcionData();
+        Inscripcion ins1 = new Inscripcion();
+        Inscripcion ins2 = new Inscripcion();
+        
+        ins1.setAlumno(alumno5);
+        ins1.setMateria(materia4);
+        ins2.setAlumno(alumno6);
+        ins2.setMateria(materia5);
+        
+        System.out.println("/////// guardar inscripcion:");
+        
+        insData.guardarInscripcion(ins1);
+        insData.guardarInscripcion(ins2);
+        
+        System.out.println("/////// obtener inscripcones:");
+        
+        for (Inscripcion listaInscripciones : insData.obtenerInscripciones()) {
+            System.out.println(listaInscripciones.toString());
+        }
+        
+        System.out.println("/////// obtener inscripcones por alumno:");
+        
+        for (Inscripcion insAlumno : insData.obtenerInscripcionesPorAlumno(alumno5.getIdAlumno())) {
+            System.out.println(insAlumno.toString());
         }
     }
 }
