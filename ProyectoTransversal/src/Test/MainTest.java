@@ -1,6 +1,8 @@
 package Test;
 import AccesoADatos.AlumnoData;
+import AccesoADatos.MateriaData;
 import Entidades.Alumno;
+import Entidades.Materia;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -8,6 +10,8 @@ import java.time.Month;
 
 public class MainTest {
     public static void main(String[] args) {
+        
+        System.out.println("///////////////////// PRUEBAS ALUMNO:");
         
         AlumnoData ad = new AlumnoData();
         Alumno alumno1 = new Alumno(40123123,"Ramirez", "Joseph", LocalDate.of(2023, Month.MARCH, 12), true);
@@ -62,5 +66,55 @@ public class MainTest {
             System.out.println(a.toString());
         }
         
+        System.out.println("");
+        
+        System.out.println("///////////////////// PRUEBAS MATERIA:");
+        
+        MateriaData md = new MateriaData();
+        Materia materia1 = new Materia("matematicas 1", 2, true);
+        
+
+        
+        System.out.println("/////// guardar materia:");
+        
+        md.guardarMateria(materia1);
+        
+        Materia materia2 = md.buscarMateria(materia1.getIdMateria());
+        
+        System.out.println("/////// buscar materia:");
+        
+        System.out.println(materia1.toString());
+        System.out.println("");
+        System.out.println(materia2.toString());
+        
+        System.out.println("/////// listar materias:");
+        
+        Materia materia3 = new Materia("lab 2", 3, true);
+        Materia materia4 = new Materia("web 1", 2, true);
+        
+        md.guardarMateria(materia3);
+        md.guardarMateria(materia4);
+        
+        for (Materia a : md.listarMaterias()) {
+            System.out.println(a.toString());
+        }
+        
+        System.out.println("/////// modificar materia:");
+        
+        Materia materia5 = new Materia(materia1.getIdMateria(),"matematicas introductorias", 1, true);;
+        
+        md.modificarMateria(materia5);
+        
+        for (Materia a : md.listarMaterias()) {
+            System.out.println(a.toString());
+        }
+        
+        System.out.println("/////// eliminar materia:");
+   
+        md.eliminarMateria(materia3.getIdMateria());
+        
+        for (Materia a : md.listarMaterias()) {
+            System.out.println(a.toString());
+        }
     }
 }
