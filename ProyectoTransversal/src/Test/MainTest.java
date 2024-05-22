@@ -103,7 +103,7 @@ public class MainTest {
         
         System.out.println("/////// modificar materia:");
         
-        Materia materia5 = new Materia(materia1.getIdMateria(),"matematicas introductorias", 1, true);;
+        Materia materia5 = new Materia(materia1.getIdMateria(),"matematicas introductoria", 1, true);
         
         md.modificarMateria(materia5);
         
@@ -126,27 +126,92 @@ public class MainTest {
         InscripcionData insData = new InscripcionData();
         Inscripcion ins1 = new Inscripcion();
         Inscripcion ins2 = new Inscripcion();
+        Inscripcion ins3 = new Inscripcion();
         
         ins1.setAlumno(alumno5);
         ins1.setMateria(materia4);
         ins2.setAlumno(alumno6);
         ins2.setMateria(materia5);
+        ins3.setAlumno(alumno5);
+        ins3.setMateria(materia5);
         
+        System.out.println("");
         System.out.println("/////// guardar inscripcion:");
+        System.out.println("");
         
         insData.guardarInscripcion(ins1);
         insData.guardarInscripcion(ins2);
+        insData.guardarInscripcion(ins3);
         
+        System.out.println("");
         System.out.println("/////// obtener inscripcones:");
+        System.out.println("");
         
         for (Inscripcion listaInscripciones : insData.obtenerInscripciones()) {
             System.out.println(listaInscripciones.toString());
         }
         
+        System.out.println("");
         System.out.println("/////// obtener inscripcones por alumno:");
+        System.out.println("");
         
         for (Inscripcion insAlumno : insData.obtenerInscripcionesPorAlumno(alumno5.getIdAlumno())) {
             System.out.println(insAlumno.toString());
         }
+        
+        System.out.println("");
+        System.out.println("/////// obtener materias cursadas:");
+        System.out.println("");
+        
+        for (Materia materiasCursadas : insData.obtenerMateriasCursadas(alumno5.getIdAlumno())) {
+            System.out.println(materiasCursadas);
+        }
+        
+        System.out.println("");
+        System.out.println("/////// obtener materias no cursadas:");
+        System.out.println("");
+        
+        for (Materia MateriasNOCursadas : insData.obtenerMateriasNOCursadas(alumno5.getIdAlumno())) {
+            System.out.println(MateriasNOCursadas);
+        }
+        
+        System.out.println("");
+        System.out.println("/////// obtener alumnos por materia:");
+        System.out.println("");
+        
+        for (Alumno alumno : insData.obtenerAlumnosXMateria(materia4.getIdMateria())) {
+            System.out.println(alumno.toString());
+        }
+        
+        System.out.println("");
+        System.out.println("/////// actualizar nota:");
+        System.out.println("");
+        
+        System.out.println("Notas originales");
+        
+        for (Inscripcion listaInscripciones : insData.obtenerInscripciones()) {
+            System.out.println(listaInscripciones.getNota());
+        }
+        
+        insData.actualizarNota(alumno5.getIdAlumno(), materia4.getIdMateria(), 7.25);
+        insData.actualizarNota(alumno6.getIdAlumno(), materia5.getIdMateria(), 8);
+        insData.actualizarNota(alumno5.getIdAlumno(), materia5.getIdMateria(), 9.5);
+        
+        System.out.println("Notas actualizadas");
+        
+        for (Inscripcion listaInscripciones : insData.obtenerInscripciones()) {
+            System.out.println(listaInscripciones.getNota());
+        }
+        
+        System.out.println("");
+        System.out.println("/////// borrar inscripcion:");
+        System.out.println("");
+        
+        insData.borrarInscripcionMateriaAlumno(alumno6.getIdAlumno(), materia5.getIdMateria());
+        
+        for (Inscripcion listaInscripciones : insData.obtenerInscripciones()) {
+            System.out.println(listaInscripciones.toString());
+        }
+        
     }
 }
