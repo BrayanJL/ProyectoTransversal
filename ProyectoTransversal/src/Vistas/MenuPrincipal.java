@@ -26,7 +26,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jPanel1 = new javax.swing.JPanel();
+        jdpMenuPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jmAlumno = new javax.swing.JMenu();
         jmiAbmAlumnos = new javax.swing.JMenuItem();
@@ -39,16 +40,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmiConsultaAlumnosPorMateria = new javax.swing.JMenuItem();
         jmSalir = new javax.swing.JMenu();
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jdpMenuPrincipalLayout = new javax.swing.GroupLayout(jdpMenuPrincipal);
+        jdpMenuPrincipal.setLayout(jdpMenuPrincipalLayout);
+        jdpMenuPrincipalLayout.setHorizontalGroup(
+            jdpMenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 352, Short.MAX_VALUE)
         );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jdpMenuPrincipalLayout.setVerticalGroup(
+            jdpMenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 294, Short.MAX_VALUE)
         );
 
@@ -67,6 +79,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmMateria.setText("Materia");
 
         jmiAbmMaterias.setText("Formulario de Materia");
+        jmiAbmMaterias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAbmMateriasActionPerformed(evt);
+            }
+        });
         jmMateria.add(jmiAbmMaterias);
 
         jMenuBar1.add(jmMateria);
@@ -74,9 +91,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmAdministracion.setText("Administración");
 
         jmiAbmInscripciones.setText("Manejo de Inscripciones");
+        jmiAbmInscripciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAbmInscripcionesActionPerformed(evt);
+            }
+        });
         jmAdministracion.add(jmiAbmInscripciones);
 
         jmiAbmNotas.setText("Manipulacion de notas");
+        jmiAbmNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAbmNotasActionPerformed(evt);
+            }
+        });
         jmAdministracion.add(jmiAbmNotas);
 
         jMenuBar1.add(jmAdministracion);
@@ -84,11 +111,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmConsultas.setText("Consultas");
 
         jmiConsultaAlumnosPorMateria.setText("Alumnos por materia");
+        jmiConsultaAlumnosPorMateria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiConsultaAlumnosPorMateriaActionPerformed(evt);
+            }
+        });
         jmConsultas.add(jmiConsultaAlumnosPorMateria);
 
         jMenuBar1.add(jmConsultas);
 
         jmSalir.setText("Salir");
+        jmSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmSalirActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jmSalir);
 
         setJMenuBar(jMenuBar1);
@@ -97,11 +134,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addComponent(jdpMenuPrincipal)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addComponent(jdpMenuPrincipal)
         );
 
         pack();
@@ -110,6 +147,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jmiAbmAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmAlumnosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jmiAbmAlumnosActionPerformed
+
+    private void jmiAbmMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmMateriasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jmiAbmMateriasActionPerformed
+
+    private void jmiAbmInscripcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmInscripcionesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jmiAbmInscripcionesActionPerformed
+
+    private void jmiAbmNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmNotasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jmiAbmNotasActionPerformed
+
+    private void jmiConsultaAlumnosPorMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiConsultaAlumnosPorMateriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jmiConsultaAlumnosPorMateriaActionPerformed
+
+    private void jmSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmSalirActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jmSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,8 +205,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JDesktopPane jdpMenuPrincipal;
     private javax.swing.JMenu jmAdministracion;
     private javax.swing.JMenu jmAlumno;
     private javax.swing.JMenu jmConsultas;
