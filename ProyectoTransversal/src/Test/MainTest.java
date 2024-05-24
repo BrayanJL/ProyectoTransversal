@@ -50,6 +50,12 @@ public class MainTest {
             System.out.println(a.toString());
         }
         
+        System.out.println("/////// listar alumnos activos:");
+        
+        for (Alumno a : ad.listarAlumnosActivos()) {
+            System.out.println(a.toString());
+        }
+        
         System.out.println("/////// modificar alumno:");
         
         Alumno alumno6 = new Alumno(alumno1.getIdAlumno(), 40123123, "Josephson", "Ramiro", LocalDate.of(2024, Month.APRIL, 23), true);
@@ -63,6 +69,7 @@ public class MainTest {
         System.out.println("/////// eliminar alumno:");
    
         ad.eliminarAlumno(alumno4.getIdAlumno());
+        alumno4 = ad.buscarAlumno(alumno4.getIdAlumno());
         
         for (Alumno a : ad.listarAlumnos()) {
             System.out.println(a.toString());
@@ -101,6 +108,12 @@ public class MainTest {
             System.out.println(a.toString());
         }
         
+        System.out.println("/////// listar materias activas:");
+        
+        for (Materia a : md.listarMateriasActivas()) {
+            System.out.println(a.toString());
+        }
+        
         System.out.println("/////// modificar materia:");
         
         Materia materia5 = new Materia(materia1.getIdMateria(),"matematicas introductoria", 1, true);
@@ -114,6 +127,7 @@ public class MainTest {
         System.out.println("/////// eliminar materia:");
    
         md.eliminarMateria(materia3.getIdMateria());
+        materia3 = md.buscarMateria(materia3.getIdMateria());
         
         for (Materia a : md.listarMaterias()) {
             System.out.println(a.toString());
@@ -127,6 +141,8 @@ public class MainTest {
         Inscripcion ins1 = new Inscripcion();
         Inscripcion ins2 = new Inscripcion();
         Inscripcion ins3 = new Inscripcion();
+        Inscripcion ins4 = new Inscripcion();
+        Inscripcion ins5 = new Inscripcion();
         
         ins1.setAlumno(alumno5);
         ins1.setMateria(materia4);
@@ -134,6 +150,10 @@ public class MainTest {
         ins2.setMateria(materia5);
         ins3.setAlumno(alumno5);
         ins3.setMateria(materia5);
+        ins4.setAlumno(alumno4);
+        ins4.setMateria(materia4);
+        ins5.setAlumno(alumno6);
+        ins5.setMateria(materia3);
         
         System.out.println("");
         System.out.println("/////// guardar inscripcion:");
@@ -142,6 +162,8 @@ public class MainTest {
         insData.guardarInscripcion(ins1);
         insData.guardarInscripcion(ins2);
         insData.guardarInscripcion(ins3);
+        insData.guardarInscripcion(ins4);
+        insData.guardarInscripcion(ins5);
         
         System.out.println("");
         System.out.println("/////// obtener inscripcones:");
@@ -210,6 +232,17 @@ public class MainTest {
         insData.borrarInscripcionMateriaAlumno(alumno6.getIdAlumno(), materia5.getIdMateria());
         
         for (Inscripcion listaInscripciones : insData.obtenerInscripciones()) {
+            System.out.println(listaInscripciones.toString());
+        }
+        
+        System.out.println("");
+        System.out.println("/////// obtener inscripcones validas:");
+        System.out.println("");
+        
+        md.eliminarMateria(materia5.getIdMateria());
+        materia5 = md.buscarMateria(materia5.getIdMateria());
+        
+        for (Inscripcion listaInscripciones : insData.obtenerInscripcionesValidas()) {
             System.out.println(listaInscripciones.toString());
         }
         

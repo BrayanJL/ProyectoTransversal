@@ -18,35 +18,80 @@ public class InscripcionData {
     }
     
     public void guardarInscripcion (Inscripcion insc) {
-        String sql = "INSERT INTO inscripcion (nota, idAlumno, idMateria)"
+        boolean ok1 = insc.getAlumno().isActivo();
+        boolean ok2 = insc.getMateria().isActivo();
+        
+        if (ok1 && ok2) {
+            String sql = "INSERT INTO inscripcion (nota, idAlumno, idMateria)"
                 + "VALUES (?, ?, ?)";
+            
+            try {
+                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+                ps.setDouble(1, insc.getNota());
+                ps.setInt(2, insc.getIdAlumno());
+                ps.setInt(3, insc.getIdMateria());
+
+                ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
+
+                if (rs.next()) {
+                    insc.setIdInscripcion(rs.getInt(1));
+                    JOptionPane.showMessageDialog(null, "Se agrego la inscripcion exitosamente");
+                }
+                ps.close();
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Hubo un error al acceder la tabla Inscripcion" + e.getMessage());
+            }
+        }
+        else {
+            if(ok1 == false) {
+                JOptionPane.showMessageDialog(null, "No se puede inscribir a un alumno no activo");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "No es posible inscribirse a una materia no activa");
+            }
+        }
+        
+    }
+    
+    //Retorna las inscripciones con alumnos y materia activas.
+    public List<Inscripcion> obtenerInscripcionesValidas() {
+        List<Inscripcion> inscripciones = new ArrayList<>();
         
         try {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            String sql = "SELECT * FROM inscripcion "
+                    + "INNER JOIN alumno ON inscripcion.idAlumno = alumno.idAlumno "
+                    + "INNER JOIN materia ON inscripcion.idMateria = materia.idMateria "
+                    + "WHERE alumno.estado = 1 AND materia.estado = 1";
             
-            ps.setDouble(1, insc.getNota());
-            ps.setInt(2, insc.getIdAlumno());
-            ps.setInt(3, insc.getIdMateria());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
             
-            ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            
-            if (rs.next()) {
-                insc.setIdInscripcion(rs.getInt(1));
-                JOptionPane.showMessageDialog(null, "Se agrego la inscripcion exitosamente");
+            while (rs.next()) {
+                Inscripcion inscripcion = new Inscripcion();
+                inscripcion.setIdInscripcion(rs.getInt("idInscripto"));
+                inscripcion.setNota(rs.getDouble("nota"));
+                inscripcion.setAlumno(aluData.buscarAlumno(rs.getInt("idAlumno")));
+                inscripcion.setMateria(matData.buscarMateria(rs.getInt("idMateria")));
+                inscripciones.add(inscripcion);
             }
             ps.close();
-            
+                
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Hubo un error al acceder la tabla Inscripcion" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Hubo un error al acceder la tabla Inscripcion"+e.getMessage());
         }
+        
+        return inscripciones;
     }
     
     public List<Inscripcion> obtenerInscripciones() {
         List<Inscripcion> inscripciones = new ArrayList<>();
         
         try {
-            String sql = "SELECT * FROM inscripcion";
+            String sql = "SELECT * FROM inscripcion ";
+            
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             
@@ -129,8 +174,8 @@ public class InscripcionData {
         
         try {
             String sql = "SELECT * FROM materia "
-                    + "WHERE idMateria "
-                    + "NOT IN (SELECT inscripcion.idMateria FROM inscripcion WHERE inscripcion.idAlumno = ? )";
+                    + "WHERE estado != 0 "
+                    + "AND idMateria NOT IN (SELECT inscripcion.idMateria FROM inscripcion WHERE inscripcion.idAlumno = ? )";
             
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idAlumno);

@@ -56,7 +56,7 @@ public class Alumno {
     public void setFechaNac(LocalDate fechaNac){
         this.fechaNac = fechaNac;
     }
-    public boolean getActivo(){
+    public boolean isActivo(){
         return activo;
     }
     public void setActivo(boolean activo){

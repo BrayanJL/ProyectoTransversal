@@ -22,7 +22,7 @@ public class AlumnoData {
             ps.setString(2, alumno.getApellido());
             ps.setString(3, alumno.getNombre());
             ps.setDate(4, Date.valueOf(alumno.getFechaNac()));
-            ps.setBoolean(5, alumno.getActivo());
+            ps.setBoolean(5, alumno.isActivo());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
 
@@ -41,7 +41,7 @@ public class AlumnoData {
     public Alumno buscarAlumno(int id) {
         
         Alumno alumno = null;
-        String sql = "SELECT dni, apellido, nombre, fechaNacimiento FROM alumno WHERE idAlumno = ? AND estado = 1";
+        String sql = "SELECT * FROM alumno WHERE idAlumno = ? ";
         PreparedStatement ps = null;
         
         try {
@@ -52,12 +52,12 @@ public class AlumnoData {
             
             if (rs.next()) {
                 alumno = new Alumno();
-                alumno.setIdAlumno(id);
+                alumno.setIdAlumno(rs.getInt("idAlumno"));
                 alumno.setDni(rs.getInt("dni"));
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));
                 alumno.setFechaNac(rs.getDate("fechaNacimiento").toLocalDate());
-                alumno.setActivo(true);
+                alumno.setActivo(rs.getBoolean("estado"));
                 
             } else JOptionPane.showMessageDialog(null, "No existe alumno con el ID que solicito");
             ps.close();
@@ -72,7 +72,7 @@ public class AlumnoData {
     public Alumno buscarAlumnoPorDNI(int dni) {
         
         Alumno alumno = null;
-        String sql = "SELECT idAlumno, dni, apellido, nombre, fechaNacimiento FROM alumno WHERE dni = ? AND estado = 1";
+        String sql = "SELECT * FROM alumno WHERE dni = ? ";
         PreparedStatement ps = null;
         
         try {
@@ -88,7 +88,7 @@ public class AlumnoData {
                 alumno.setApellido(rs.getString("apellido"));
                 alumno.setNombre(rs.getString("nombre"));
                 alumno.setFechaNac(rs.getDate("fechaNacimiento").toLocalDate());
-                alumno.setActivo(true);
+                alumno.setActivo(rs.getBoolean("estado"));
                 
             } else JOptionPane.showMessageDialog(null, "No existe alumno con el DNI que solicito");
             ps.close();
@@ -104,7 +104,7 @@ public class AlumnoData {
             
         List<Alumno> alumnos = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM alumno WHERE estado = 1";
+            String sql = "SELECT * FROM alumno";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -123,6 +123,13 @@ public class AlumnoData {
             JOptionPane.showMessageDialog(null, "Hubo un error al acceder la tabla Alumno "+e.getMessage());
         }
             
+        return alumnos;
+    }
+    
+    public List<Alumno> listarAlumnosActivos() {
+        List<Alumno> alumnos = listarAlumnos();
+        alumnos.removeIf(alumno -> alumno.isActivo() == false);
+        
         return alumnos;
     }
         
@@ -169,7 +176,6 @@ public class AlumnoData {
             JOptionPane.showMessageDialog(null, "Hubo un error al acceder la tabla Alumno " + e.getMessage());
         }
 
-    }
-        
+    }        
         
 }
