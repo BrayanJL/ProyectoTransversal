@@ -107,19 +107,9 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
 
         bgEstado.add(jrbActivo);
         jrbActivo.setText("Activo");
-        jrbActivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jrbActivoActionPerformed(evt);
-            }
-        });
 
         bgEstado.add(jrbInactivo);
         jrbInactivo.setText("Inactivo");
-        jrbInactivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jrbInactivoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -215,10 +205,13 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
         String fecha = formato.format(jdFecha.getDate()); //de date a string
         DateTimeFormatter patron= DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate fecNac = LocalDate.parse(fecha, patron);
+        
+        
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
@@ -246,20 +239,12 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
             jtfDocumento.setText(Integer.toString(alumno.getDni()));
             jtfApellido.setText(alumno.getApellido());
             jtfNombre.setText(alumno.getNombre());
-            jrbActivo.setSelected(alumno.getActivo());
-            jrbInactivo.setSelected(!alumno.getActivo());
+            jrbActivo.setSelected(alumno.isActivo());
+            jrbInactivo.setSelected(!alumno.isActivo());
             jdFecha.setDate(Date.from(alumno.getFechaNac().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         }
         return;
     }//GEN-LAST:event_jbBuscarActionPerformed
-
-    private void jrbActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbActivoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jrbActivoActionPerformed
-
-    private void jrbInactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbInactivoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jrbInactivoActionPerformed
 
     /**
      * @param args the command line arguments
