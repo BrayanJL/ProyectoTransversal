@@ -19,11 +19,14 @@ import javax.swing.JOptionPane;
  */
 public class frmAlumnos extends javax.swing.JInternalFrame {
     
+    AlumnoData alumnoData = new AlumnoData();
+    Alumno alumno = new Alumno();
     /**
      * Creates new form AbmAlumnos
      */
     public frmAlumnos() {
         initComponents();
+        limpiarCampos();
     }
 
     /**
@@ -200,22 +203,25 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
         // TODO add your handling code here:
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        
-        String fecha = formato.format(jdFecha.getDate()); //de date a string
-        DateTimeFormatter patron= DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate fecNac = LocalDate.parse(fecha, patron);
-        
-        
+        //Cosas necesarias para poder obtener la fecha como Localdate
+        //Esta aca arriba, para que sea mas facil leer la intencion del codigo de abajo
+        setearAlumnoConDatosDeFormulario();
+        alumnoData.guardarAlumno(alumno);        
+        limpiarCampos();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
-        
+        setearAlumnoConDatosDeFormulario();
+        alumnoData.eliminarAlumno(alumno.getDni());
+        limpiarCampos();
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
+        setearAlumnoConDatosDeFormulario();
+        alumnoData.modificarAlumno(alumno);
+        limpiarCampos();
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
@@ -280,6 +286,30 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
                 new frmAlumnos().setVisible(true);
             }
         });
+    }
+    
+    private void limpiarCampos(){
+        jtfDocumento.setText("");
+        jtfApellido.setText("");
+        jtfNombre.setText("");
+        jrbActivo.setSelected(true);
+        jrbInactivo.setSelected(false);
+        Date epoch = new Date(0L);
+        jdFecha.setDate(epoch);
+    }
+    
+    private void setearAlumnoConDatosDeFormulario(){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String fecha = formato.format(jdFecha.getDate()); //de date a string
+        DateTimeFormatter patron= DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        int dni = Integer.parseInt(jtfDocumento.getText());
+        String apellido = jtfApellido.getText();
+        String nombre = jtfNombre.getText();
+        LocalDate fechaDeNacimiento = LocalDate.parse(fecha, patron);
+        boolean activo = jrbActivo.isSelected();
+        
+        alumno = new Alumno(dni,apellido,nombre,fechaDeNacimiento,activo);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

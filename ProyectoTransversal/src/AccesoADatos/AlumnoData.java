@@ -135,16 +135,17 @@ public class AlumnoData {
         
    public void modificarAlumno(Alumno alumno) {
             
-        String sql = "UPDATE alumno SET dni = ? , apellido = ? , nombre = ? , fechaNacimiento = ? WHERE idAlumno = ? ";
+        String sql = "UPDATE alumno SET apellido = ? , nombre = ? , fechaNacimiento = ?, estado = ? WHERE dni = ? ";
         PreparedStatement ps = null;
   
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, alumno.getDni());
-            ps.setString(2, alumno.getApellido());
-            ps.setString(3, alumno.getNombre());
-            ps.setDate(4, Date.valueOf(alumno.getFechaNac()));
-            ps.setInt(5, alumno.getIdAlumno());
+            ps.setString(1, alumno.getApellido());
+            ps.setString(2, alumno.getNombre());
+            ps.setDate(3, Date.valueOf(alumno.getFechaNac()));
+            ps.setBoolean(4, alumno.isActivo());
+            ps.setInt(5, alumno.getDni());
+            //ps.setInt(5, alumno.getIdAlumno());
             
             int exito = ps.executeUpdate();
             
