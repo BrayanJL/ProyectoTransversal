@@ -140,11 +140,11 @@ public class AlumnoData {
   
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(5, alumno.getIdAlumno());
             ps.setInt(1, alumno.getDni());
             ps.setString(2, alumno.getApellido());
             ps.setString(3, alumno.getNombre());
             ps.setDate(4, Date.valueOf(alumno.getFechaNac()));
+            ps.setInt(5, alumno.getIdAlumno());
             
             int exito = ps.executeUpdate();
             

@@ -4,20 +4,25 @@
  */
 package Vistas;
 
+import AccesoADatos.AlumnoData;
+import Entidades.Alumno;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author N
  */
-public class AbmAlumnos extends javax.swing.JFrame {
-
+public class frmAlumnos extends javax.swing.JInternalFrame {
+    
     /**
      * Creates new form AbmAlumnos
      */
-    public AbmAlumnos() {
+    public frmAlumnos() {
         initComponents();
     }
 
@@ -30,6 +35,7 @@ public class AbmAlumnos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bgEstado = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jldocumento = new javax.swing.JLabel();
         jlApellido = new javax.swing.JLabel();
@@ -44,10 +50,11 @@ public class AbmAlumnos extends javax.swing.JFrame {
         jbEliminar = new javax.swing.JButton();
         jbGuardar = new javax.swing.JButton();
         jbSalir = new javax.swing.JButton();
-        jtbEstado = new javax.swing.JToggleButton();
         jdFecha = new com.toedter.calendar.JDateChooser();
+        jrbActivo = new javax.swing.JRadioButton();
+        jrbInactivo = new javax.swing.JRadioButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jldocumento.setText("Documento");
 
@@ -94,16 +101,25 @@ public class AbmAlumnos extends javax.swing.JFrame {
             }
         });
 
-        jtbEstado.setText("activo/inactivo");
-        jtbEstado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtbEstadoActionPerformed(evt);
-            }
-        });
-
         jdFecha.setDateFormatString("dd/MM/yyyy");
         jdFecha.setMaxSelectableDate(new java.util.Date(253370779272000L));
         jdFecha.setMinSelectableDate(new java.util.Date(-2208973392000L));
+
+        bgEstado.add(jrbActivo);
+        jrbActivo.setText("Activo");
+        jrbActivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbActivoActionPerformed(evt);
+            }
+        });
+
+        bgEstado.add(jrbInactivo);
+        jrbInactivo.setText("Inactivo");
+        jrbInactivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbInactivoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -122,23 +138,27 @@ public class AbmAlumnos extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jtfApellido, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jtfDocumento, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jtfNombre)
-                                    .addComponent(jtbEstado, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+                                    .addComponent(jtfDocumento, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jdFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jbBuscar))
-                            .addComponent(jdFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jrbActivo)
+                                .addGap(18, 18, 18)
+                                .addComponent(jrbInactivo)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jbNuevo)
                         .addGap(18, 18, 18)
                         .addComponent(jbEliminar)
                         .addGap(18, 18, 18)
                         .addComponent(jbGuardar)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                         .addComponent(jbSalir)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,7 +179,8 @@ public class AbmAlumnos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlEstado)
-                    .addComponent(jtbEstado))
+                    .addComponent(jrbActivo)
+                    .addComponent(jrbInactivo))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlFechaDeNacimiento)
@@ -177,7 +198,7 @@ public class AbmAlumnos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,15 +227,39 @@ public class AbmAlumnos extends javax.swing.JFrame {
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
-
-    private void jtbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbEstadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtbEstadoActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         // TODO add your handling code here:
+        int numeroDocumento = 0;
+        Alumno alumno;
+        try{        
+            numeroDocumento=Integer.parseInt(jtfDocumento.getText());
+        }catch(Exception nfe){
+            JOptionPane.showMessageDialog(this, "El código debe ser un nro.");
+            return;
+        }
+        if (numeroDocumento > 0){
+            AlumnoData alumnoData = new AlumnoData();
+            alumno = alumnoData.buscarAlumnoPorDNI(numeroDocumento);
+            jtfDocumento.setText(Integer.toString(alumno.getDni()));
+            jtfApellido.setText(alumno.getApellido());
+            jtfNombre.setText(alumno.getNombre());
+            jrbActivo.setSelected(alumno.getActivo());
+            jrbInactivo.setSelected(!alumno.getActivo());
+            jdFecha.setDate(Date.from(alumno.getFechaNac().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        }
+        return;
     }//GEN-LAST:event_jbBuscarActionPerformed
+
+    private void jrbActivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbActivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jrbActivoActionPerformed
+
+    private void jrbInactivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbInactivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jrbInactivoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,25 +278,27 @@ public class AbmAlumnos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AbmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AbmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AbmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AbmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAlumnos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AbmAlumnos().setVisible(true);
+                new frmAlumnos().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgEstado;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbBuscar;
     private javax.swing.JButton jbEliminar;
@@ -264,7 +311,8 @@ public class AbmAlumnos extends javax.swing.JFrame {
     private javax.swing.JLabel jlFechaDeNacimiento;
     private javax.swing.JLabel jlNombre;
     private javax.swing.JLabel jldocumento;
-    private javax.swing.JToggleButton jtbEstado;
+    private javax.swing.JRadioButton jrbActivo;
+    private javax.swing.JRadioButton jrbInactivo;
     private javax.swing.JTextField jtfApellido;
     private javax.swing.JTextField jtfDocumento;
     private javax.swing.JTextField jtfNombre;

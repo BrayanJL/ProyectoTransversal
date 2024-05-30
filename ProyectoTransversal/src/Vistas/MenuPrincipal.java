@@ -38,7 +38,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jmiAbmNotas = new javax.swing.JMenuItem();
         jmConsultas = new javax.swing.JMenu();
         jmiConsultaAlumnosPorMateria = new javax.swing.JMenuItem();
-        jmSalir = new javax.swing.JMenu();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -57,11 +56,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jdpMenuPrincipal.setLayout(jdpMenuPrincipalLayout);
         jdpMenuPrincipalLayout.setHorizontalGroup(
             jdpMenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
+            .addGap(0, 574, Short.MAX_VALUE)
         );
         jdpMenuPrincipalLayout.setVerticalGroup(
             jdpMenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 294, Short.MAX_VALUE)
+            .addGap(0, 478, Short.MAX_VALUE)
         );
 
         jmAlumno.setText("Alumno");
@@ -120,14 +119,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jmConsultas);
 
-        jmSalir.setText("Salir");
-        jmSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmSalirActionPerformed(evt);
-            }
-        });
-        jMenuBar1.add(jmSalir);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,28 +137,53 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void jmiAbmAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmAlumnosActionPerformed
         // TODO add your handling code here:
+        jdpMenuPrincipal.removeAll();
+        jdpMenuPrincipal.repaint();
+        frmAlumnos formulario = new frmAlumnos();
+        formulario.setVisible(true);
+        jdpMenuPrincipal.add(formulario);
+        jdpMenuPrincipal.moveToFront(formulario);
     }//GEN-LAST:event_jmiAbmAlumnosActionPerformed
 
     private void jmiAbmMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmMateriasActionPerformed
         // TODO add your handling code here:
+        jdpMenuPrincipal.removeAll();
+        jdpMenuPrincipal.repaint();
+        frmMaterias formulario = new frmMaterias();
+        formulario.setVisible(true);
+        jdpMenuPrincipal.add(formulario);
+        jdpMenuPrincipal.moveToFront(formulario);
     }//GEN-LAST:event_jmiAbmMateriasActionPerformed
 
     private void jmiAbmInscripcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmInscripcionesActionPerformed
         // TODO add your handling code here:
+        jdpMenuPrincipal.removeAll();
+        jdpMenuPrincipal.repaint();
+        frmInscripciones formulario = new frmInscripciones();
+        formulario.setVisible(true);
+        jdpMenuPrincipal.add(formulario);
+        jdpMenuPrincipal.moveToFront(formulario);
     }//GEN-LAST:event_jmiAbmInscripcionesActionPerformed
 
     private void jmiAbmNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbmNotasActionPerformed
         // TODO add your handling code here:
+        jdpMenuPrincipal.removeAll();
+        jdpMenuPrincipal.repaint();
+        frmNotas formulario = new frmNotas();
+        formulario.setVisible(true);
+        jdpMenuPrincipal.add(formulario);
+        jdpMenuPrincipal.moveToFront(formulario);
     }//GEN-LAST:event_jmiAbmNotasActionPerformed
 
     private void jmiConsultaAlumnosPorMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiConsultaAlumnosPorMateriaActionPerformed
         // TODO add your handling code here:
+        jdpMenuPrincipal.removeAll();
+        jdpMenuPrincipal.repaint();
+        frmAlumnosPorMateria formulario = new frmAlumnosPorMateria();
+        formulario.setVisible(true);
+        jdpMenuPrincipal.add(formulario);
+        jdpMenuPrincipal.moveToFront(formulario);
     }//GEN-LAST:event_jmiConsultaAlumnosPorMateriaActionPerformed
-
-    private void jmSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmSalirActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jmSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,7 +228,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jmAlumno;
     private javax.swing.JMenu jmConsultas;
     private javax.swing.JMenu jmMateria;
-    private javax.swing.JMenu jmSalir;
     private javax.swing.JMenuItem jmiAbmAlumnos;
     private javax.swing.JMenuItem jmiAbmInscripciones;
     private javax.swing.JMenuItem jmiAbmMaterias;
