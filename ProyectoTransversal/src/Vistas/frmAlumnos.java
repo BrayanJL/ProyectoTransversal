@@ -6,10 +6,8 @@ package Vistas;
 
 import AccesoADatos.AlumnoData;
 import Entidades.Alumno;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -19,8 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class frmAlumnos extends javax.swing.JInternalFrame {
     
-    AlumnoData alumnoData = new AlumnoData();
-    Alumno alumno = new Alumno();
+    private AlumnoData alumnoData = new AlumnoData();
+    private Alumno alumnoActual = null;
     /**
      * Creates new form AbmAlumnos
      */
@@ -202,25 +200,38 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        // TODO add your handling code here:
-        //Cosas necesarias para poder obtener la fecha como Localdate
-        //Esta aca arriba, para que sea mas facil leer la intencion del codigo de abajo
-        setearAlumnoConDatosDeFormulario();
-        alumnoData.guardarAlumno(alumno);        
+        java.util.Date sfecha = jdFecha.getDate();
+        LocalDate fechaNac = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        boolean activo = jrbActivo.isSelected();
+        
+        if (validacionAlumno()) {
+            int dni = Integer.parseInt(jtfDocumento.getText());
+            String apellido = jtfApellido.getText();
+            String nombre = jtfNombre.getText();
+            
+            if (alumnoData.buscarAlumnoPorDNI(dni) == null) {
+                alumnoActual = new Alumno(dni,apellido,nombre,fechaNac,activo);
+                alumnoData.guardarAlumno(alumnoActual);  
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Este alumno ya existe");
+            }
+        }
+        
         limpiarCampos();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
         setearAlumnoConDatosDeFormulario();
-        alumnoData.eliminarAlumno(alumno.getDni());
+        alumnoData.eliminarAlumno(alumnoActual.getDni());
         limpiarCampos();
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
         setearAlumnoConDatosDeFormulario();
-        alumnoData.modificarAlumno(alumno);
+        alumnoData.modificarAlumno(alumnoActual);
         limpiarCampos();
     }//GEN-LAST:event_jbGuardarActionPerformed
 
@@ -231,12 +242,13 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         // TODO add your handling code here:
+        /*
         int numeroDocumento = 0;
         Alumno alumno;
         try{        
             numeroDocumento=Integer.parseInt(jtfDocumento.getText());
         }catch(Exception nfe){
-            JOptionPane.showMessageDialog(this, "El código debe ser un nro.");
+            JOptionPane.showMessageDialog(this, "El DNI debe ser un nro.");
             return;
         }
         if (numeroDocumento > 0){
@@ -250,6 +262,22 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
             jdFecha.setDate(Date.from(alumno.getFechaNac().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         }
         return;
+        */
+        
+        if(validacionDNIAlumno()) {
+            int dni = Integer.parseInt(jtfDocumento.getText());
+            alumnoActual = alumnoData.buscarAlumnoPorDNI(dni);
+            
+            if (alumnoActual != null) {
+                jtfDocumento.setText(Integer.toString(alumnoActual.getDni()));
+                jtfApellido.setText(alumnoActual.getApellido());
+                jtfNombre.setText(alumnoActual.getNombre());
+                jrbActivo.setSelected(alumnoActual.isActivo());
+                jrbInactivo.setSelected(!alumnoActual.isActivo());
+                jdFecha.setDate(Date.from(alumnoActual.getFechaNac().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            }
+        }
+        
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     /**
@@ -299,19 +327,64 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
     }
     
     private void setearAlumnoConDatosDeFormulario(){
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        String fecha = formato.format(jdFecha.getDate()); //de date a string
-        DateTimeFormatter patron= DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        int dni = Integer.parseInt(jtfDocumento.getText());
-        String apellido = jtfApellido.getText();
-        String nombre = jtfNombre.getText();
-        LocalDate fechaDeNacimiento = LocalDate.parse(fecha, patron);
-        boolean activo = jrbActivo.isSelected();
         
-        alumno = new Alumno(dni,apellido,nombre,fechaDeNacimiento,activo);
+        if (validacionAlumno()) {
+            int dni = Integer.parseInt(jtfDocumento.getText());
+            String apellido = jtfApellido.getText();
+            String nombre = jtfNombre.getText();
+            java.util.Date sfecha = jdFecha.getDate();
+            LocalDate fechaDeNacimiento = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            boolean activo = jrbActivo.isSelected();
+            
+            alumnoActual = new Alumno(dni,apellido,nombre,fechaDeNacimiento,activo);
+        }
+       
+    }
+    
+    private boolean validacionAlumno() {
+        
+        if (validacionDNIAlumno() == false) {
+            return false;
+        }
+        
+        if (jtfApellido.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Campo vacío.");
+            jtfApellido.requestFocusInWindow();
+            return false;
+        }
+        
+        if (jtfNombre.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Campo vacío.");
+            jtfNombre.requestFocusInWindow();
+            return false;
+        }
+        
+        return true;
     }
 
+    private boolean validacionDNIAlumno() {
+        
+        if (jtfDocumento.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Campo vacío.");
+            jtfDocumento.requestFocusInWindow();
+            return false;
+        }
+        
+        try{        
+            Integer.parseInt(jtfDocumento.getText());
+        }catch(Exception nfe){
+            JOptionPane.showMessageDialog(this, "El DNI debe ser un nro.");
+            return false;
+        }
+        
+        if (Integer.parseInt(jtfDocumento.getText()) < 0) {
+            JOptionPane.showMessageDialog(this, "El DNI debe ser un nro positivo.");
+            return false;
+        }
+        
+        return true;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgEstado;
     private javax.swing.JPanel jPanel1;
