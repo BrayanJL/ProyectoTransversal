@@ -200,39 +200,29 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        java.util.Date sfecha = jdFecha.getDate();
-        LocalDate fechaNac = sfecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        boolean activo = jrbActivo.isSelected();
-        
-        if (validacionAlumno()) {
-            int dni = Integer.parseInt(jtfDocumento.getText());
-            String apellido = jtfApellido.getText();
-            String nombre = jtfNombre.getText();
-            
-            if (alumnoData.buscarAlumnoPorDNI(dni) == null) {
-                alumnoActual = new Alumno(dni,apellido,nombre,fechaNac,activo);
-                alumnoData.guardarAlumno(alumnoActual);  
-            }
-            else {
-                JOptionPane.showMessageDialog(this, "Este alumno ya existe");
-            }
+        if (validacionAlumno("Alta")) {
+            setearAlumnoConDatosDeFormulario();
+            alumnoData.guardarAlumno(alumnoActual);
+            limpiarCampos();
         }
-        
-        limpiarCampos();
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
-        setearAlumnoConDatosDeFormulario();
-        alumnoData.eliminarAlumno(alumnoActual.getDni());
-        limpiarCampos();
+        if (validacionAlumno("Baja")) {
+            setearAlumnoConDatosDeFormulario();
+            alumnoData.eliminarAlumno(alumnoActual.getDni());
+            limpiarCampos();
+        }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
-        setearAlumnoConDatosDeFormulario();
-        alumnoData.modificarAlumno(alumnoActual);
-        limpiarCampos();
+        if (validacionAlumno("Modificar")) {
+            setearAlumnoConDatosDeFormulario();
+            alumnoData.modificarAlumno(alumnoActual);
+            limpiarCampos();
+        }
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
@@ -264,7 +254,7 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
         return;
         */
         
-        if(validacionDNIAlumno()) {
+        if(validacionDni()) {
             int dni = Integer.parseInt(jtfDocumento.getText());
             alumnoActual = alumnoData.buscarAlumnoPorDNI(dni);
             
@@ -327,8 +317,6 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
     }
     
     private void setearAlumnoConDatosDeFormulario(){
-        
-        if (validacionAlumno()) {
             int dni = Integer.parseInt(jtfDocumento.getText());
             String apellido = jtfApellido.getText();
             String nombre = jtfNombre.getText();
@@ -337,32 +325,82 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
             boolean activo = jrbActivo.isSelected();
             
             alumnoActual = new Alumno(dni,apellido,nombre,fechaDeNacimiento,activo);
-        }
-       
     }
     
-    private boolean validacionAlumno() {
+    private boolean validacionAlumno(String tipo) {
         
-        if (validacionDNIAlumno() == false) {
+        boolean pasoValidacion = false;
+        int dni = 0;
+        
+        switch (tipo){
+                case "Alta":{
+                    if(validacionDni()){
+                        dni = Integer.parseInt(jtfDocumento.getText());
+                        pasoValidacion = validacionApellido() &&
+                                         validacionNombre() &&
+                                         validacionFechaNacimiento() &&
+                                         !existeAlumno(dni);
+
+                        if (existeAlumno(dni)){
+                            JOptionPane.showMessageDialog(this, "Este alumno ya existe");
+                        }
+                    }
+                    break;
+                }
+                case "Modificar":{
+                    if(validacionDni()){
+                        dni = Integer.parseInt(jtfDocumento.getText());
+                        pasoValidacion = validacionApellido() &&
+                                         validacionNombre() &&
+                                         validacionFechaNacimiento() &&
+                                         existeAlumno(dni);
+
+                        if (!existeAlumno(dni)){
+                            JOptionPane.showMessageDialog(this, "No existe este alumno");
+                        }
+                    }
+                    break;
+                }
+                case "Baja":{
+                    pasoValidacion = validacionDni();
+                    
+                    if(validacionDni() && !existeAlumno(dni)){
+                        pasoValidacion = existeAlumno(dni);
+                        JOptionPane.showMessageDialog(this, "No existe este alumno");
+                    }
+                    break;
+                }
+        }
+        return pasoValidacion;
+}
+    private boolean existeAlumno(int dni){
+        if (alumnoData.buscarAlumnoPorDNI(dni) == null) {
             return false;
         }
-        
+        return true;
+}
+ 
+    private boolean validacionApellido(){
         if (jtfApellido.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Campo vacío.");
             jtfApellido.requestFocusInWindow();
             return false;
         }
-        
+        return true;
+    }
+    private boolean validacionNombre(){
         if (jtfNombre.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Campo vacío.");
             jtfNombre.requestFocusInWindow();
             return false;
         }
-        
         return true;
     }
-
-    private boolean validacionDNIAlumno() {
+    private boolean validacionFechaNacimiento(){
+        return true;
+    }
+    
+    private boolean validacionDni() {
         
         if (jtfDocumento.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Campo vacío.");
