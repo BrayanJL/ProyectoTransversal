@@ -184,6 +184,18 @@ public class frmMaterias extends javax.swing.JInternalFrame {
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
         // TODO add your handling code here:
+        //if(validacionCodigo()) {
+            int codigo = Integer.parseInt(jtfCodigo.getText());
+            materiaActual = materiaData.buscarMateria(codigo);
+            
+            if (materiaActual != null) {
+                jtfCodigo.setText(Integer.toString(materiaActual.getIdMateria()));
+                jtfNombre.setText(materiaActual.getNombre());
+                jtfAño.setText(Integer.toString(materiaActual.getAnioMateria()));
+                jrbActivo.setSelected(materiaActual.isActivo());
+                jrbInactivo.setSelected(!materiaActual.isActivo());
+            }
+        //}
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
@@ -193,29 +205,29 @@ public class frmMaterias extends javax.swing.JInternalFrame {
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
-        if (validacionMateria("Modificar")) {
+        //if (validacionMateria("Modificar")) {
             setearMateriaConDatosDeFormulario();
             materiaData.modificarMateria(materiaActual);
             limpiarCampos();
-        }
+        //}
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
-        if (validacionMateria("Baja")) {
+        //if (validacionMateria("Baja")) {
             setearMateriaConDatosDeFormulario();
             materiaData.eliminarMateria(materiaActual.getIdMateria());
             limpiarCampos();
-        }
+        //}
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
         // TODO add your handling code here:
-        if (validacionMateria("Alta")) {
+        //if (validacionMateria("Alta")) {
             setearMateriaConDatosDeFormulario();
             materiaData.guardarMateria(materiaActual);
             limpiarCampos();
-        }
+        //}
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void limpiarCampos(){

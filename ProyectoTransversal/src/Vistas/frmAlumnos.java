@@ -200,29 +200,29 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        if (validacionAlumno("Alta")) {
+        //if (validacionAlumno("Alta")) {
             setearAlumnoConDatosDeFormulario();
             alumnoData.guardarAlumno(alumnoActual);
             limpiarCampos();
-        }
+        //}
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
-        if (validacionAlumno("Baja")) {
+        //if (validacionAlumno("Baja")) {
             setearAlumnoConDatosDeFormulario();
             alumnoData.eliminarAlumno(alumnoActual.getDni());
             limpiarCampos();
-        }
+        //}
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
-        if (validacionAlumno("Modificar")) {
+        //if (validacionAlumno("Modificar")) {
             setearAlumnoConDatosDeFormulario();
             alumnoData.modificarAlumno(alumnoActual);
             limpiarCampos();
-        }
+        //}
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
