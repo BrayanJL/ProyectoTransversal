@@ -4,12 +4,19 @@
  */
 package Vistas;
 
+import AccesoADatos.MateriaData;
+import Entidades.Materia;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author N
  */
 public class frmMaterias extends javax.swing.JInternalFrame {
 
+    private MateriaData materiaData = new MateriaData();
+    private Materia materiaActual = null;
+    
     /**
      * Creates new form AbmMaterias
      */
@@ -26,6 +33,7 @@ public class frmMaterias extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bgEstado = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jlCodigo = new javax.swing.JLabel();
         jlNombre = new javax.swing.JLabel();
@@ -34,14 +42,15 @@ public class frmMaterias extends javax.swing.JInternalFrame {
         jtfNombre = new javax.swing.JTextField();
         jtfCodigo = new javax.swing.JTextField();
         jtfAño = new javax.swing.JTextField();
-        jtbEstado = new javax.swing.JToggleButton();
         jbNuevo = new javax.swing.JButton();
         jbEliminar = new javax.swing.JButton();
         jbGuardar = new javax.swing.JButton();
         jbSalir = new javax.swing.JButton();
         jbBuscar = new javax.swing.JButton();
+        jrbActivo = new javax.swing.JRadioButton();
+        jrbInactivo = new javax.swing.JRadioButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jlCodigo.setText("Codigo");
 
@@ -50,13 +59,6 @@ public class frmMaterias extends javax.swing.JInternalFrame {
         jlAño.setText("Año");
 
         jlEstado.setText("Estado");
-
-        jtbEstado.setText("activo/inactivo");
-        jtbEstado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtbEstadoActionPerformed(evt);
-            }
-        });
 
         jbNuevo.setText("Nuevo");
         jbNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +95,12 @@ public class frmMaterias extends javax.swing.JInternalFrame {
             }
         });
 
+        bgEstado.add(jrbActivo);
+        jrbActivo.setText("Activo");
+
+        bgEstado.add(jrbInactivo);
+        jrbInactivo.setText("Inactivo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -109,15 +117,17 @@ public class frmMaterias extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jtbEstado)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jtfNombre, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jtfAño)
                                     .addComponent(jtfCodigo, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addGap(18, 18, 18)
-                                .addComponent(jbBuscar))))
+                                .addComponent(jbBuscar))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jrbActivo)
+                                .addGap(18, 18, 18)
+                                .addComponent(jrbInactivo)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jbNuevo)
                         .addGap(18, 18, 18)
@@ -147,7 +157,8 @@ public class frmMaterias extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlEstado)
-                    .addComponent(jtbEstado))
+                    .addComponent(jrbActivo)
+                    .addComponent(jrbInactivo))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbNuevo)
@@ -182,20 +193,152 @@ public class frmMaterias extends javax.swing.JInternalFrame {
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
         // TODO add your handling code here:
+        if (validacionMateria("Modificar")) {
+            setearMateriaConDatosDeFormulario();
+            materiaData.modificarMateria(materiaActual);
+            limpiarCampos();
+        }
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
+        if (validacionMateria("Baja")) {
+            setearMateriaConDatosDeFormulario();
+            materiaData.eliminarMateria(materiaActual.getIdMateria());
+            limpiarCampos();
+        }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
         // TODO add your handling code here:
+        if (validacionMateria("Alta")) {
+            setearMateriaConDatosDeFormulario();
+            materiaData.guardarMateria(materiaActual);
+            limpiarCampos();
+        }
     }//GEN-LAST:event_jbNuevoActionPerformed
 
-    private void jtbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtbEstadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtbEstadoActionPerformed
+    private void limpiarCampos(){
+        jtfCodigo.setText("");
+        jtfNombre.setText("");
+        jtfAño.setText("");
+        jrbActivo.setSelected(true);
+        jrbInactivo.setSelected(false);
+    }
+    
+    private void setearMateriaConDatosDeFormulario(){
+            int codigo = Integer.parseInt(jtfCodigo.getText());
+            int año = Integer.parseInt(jtfAño.getText());
+            String nombre = jtfNombre.getText();
+            boolean activo = jrbActivo.isSelected();
+            
+            materiaActual = new Materia(codigo,nombre,año,activo);
+    }
+    
+    private boolean validacionMateria(String tipo) {
+        
+        boolean pasoValidacion = false;
+        int codigo = 0;
+        
+        switch (tipo){
+                case "Alta" -> {
+                    if(validacionCodigo()){
+                        codigo = Integer.parseInt(jtfCodigo.getText());
+                        pasoValidacion = validacionCodigo() &&
+                                         validacionNombre() &&
+                                         validacionAño() &&
+                                         !existeMateria(codigo);
 
+                        if (existeMateria(codigo)){
+                            JOptionPane.showMessageDialog(this, "Este materia ya existe");
+                        }
+                    }
+                }
+                case "Modificar" -> {
+                    if(validacionCodigo()){
+                        codigo = Integer.parseInt(jtfCodigo.getText());
+                        pasoValidacion = validacionCodigo() &&
+                                         validacionNombre() &&
+                                         validacionAño() &&
+                                         existeMateria(codigo);
+
+                        if (!existeMateria(codigo)){
+                            JOptionPane.showMessageDialog(this, "No existe este materia");
+                        }
+                    }
+                }
+                case "Baja" -> {
+                    pasoValidacion = validacionCodigo();
+                    
+                    if(validacionCodigo() && !existeMateria(codigo)){
+                        pasoValidacion = existeMateria(codigo);
+                        JOptionPane.showMessageDialog(this, "No existe este materia");
+                    }
+                }
+        }
+        return pasoValidacion;
+}
+    private boolean existeMateria(int codigo){
+        if (materiaData.buscarMateria(codigo) == null) {
+            return false;
+        }
+        return true;
+}
+
+    private boolean validacionNombre(){
+        if (jtfNombre.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Campo vacío.");
+            jtfNombre.requestFocusInWindow();
+            return false;
+        }
+        return true;
+    }
+    private boolean validacionAño(){
+        if (jtfAño.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Campo Año vacío.");
+            jtfAño.requestFocusInWindow();
+            return false;
+        }
+        
+        try{        
+            Integer.parseInt(jtfAño.getText());
+        }catch(Exception nfe){
+            JOptionPane.showMessageDialog(this, "El Año debe ser un nro.");
+            return false;
+        }
+        
+        if (Integer.parseInt(jtfAño.getText()) < 0) {
+            JOptionPane.showMessageDialog(this, "El Año debe ser un nro positivo.");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private boolean validacionCodigo() {
+        
+        if (jtfCodigo.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Campo Codigo vacío.");
+            jtfCodigo.requestFocusInWindow();
+            return false;
+        }
+        
+        try{        
+            Integer.parseInt(jtfCodigo.getText());
+        }catch(Exception nfe){
+            JOptionPane.showMessageDialog(this, "El Codigo debe ser un nro.");
+            return false;
+        }
+        
+        if (Integer.parseInt(jtfCodigo.getText()) < 0) {
+            JOptionPane.showMessageDialog(this, "El Codigo debe ser un nro positivo.");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -233,6 +376,7 @@ public class frmMaterias extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgEstado;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbBuscar;
     private javax.swing.JButton jbEliminar;
@@ -243,7 +387,8 @@ public class frmMaterias extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jlCodigo;
     private javax.swing.JLabel jlEstado;
     private javax.swing.JLabel jlNombre;
-    private javax.swing.JToggleButton jtbEstado;
+    private javax.swing.JRadioButton jrbActivo;
+    private javax.swing.JRadioButton jrbInactivo;
     private javax.swing.JTextField jtfAño;
     private javax.swing.JTextField jtfCodigo;
     private javax.swing.JTextField jtfNombre;
