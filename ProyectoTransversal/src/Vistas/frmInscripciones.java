@@ -10,6 +10,7 @@ import Entidades.Alumno;
 import Entidades.Materia;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -18,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class frmInscripciones extends javax.swing.JInternalFrame {
     AlumnoData alumnoData = new AlumnoData();
     InscripcionData inscripcionData = new InscripcionData();
-    DefaultTableModel modelo = new DefaultTableModel();
+    DefaultTableModel modelo;
     
     
     /**
@@ -26,7 +27,8 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
      */
     public frmInscripciones() {
         initComponents();
-        jtMaterias.setModel(modelo);
+        //jtMaterias.setModel(modelo);
+        modelo = (DefaultTableModel) jtMaterias.getModel();
         cargarAlumnos();
     }
     
@@ -60,7 +62,6 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
 
         jlAlumno.setText("Alumno");
 
-        jcbAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbAlumno.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jcbAlumnoItemStateChanged(evt);
@@ -215,7 +216,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
     
     private void limpiarTabla(){
         for (int i = modelo.getRowCount(); i>0; i--)
-            modelo.removeRow(1);
+            modelo.removeRow(0);
     }
     
     private void llenarTabla(){
@@ -230,11 +231,12 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
         }
 
         for(Materia m: materias) {
-        modelo.addRow(new Object[]{
-            m.getIdMateria(),
-            m.getNombre(),
-            m.getAnioMateria()
-        });
+            modelo.addRow(new Object[]{
+                m.getIdMateria(),
+                m.getNombre(),
+                m.getAnioMateria()
+            });
+            
         }
     }
     
