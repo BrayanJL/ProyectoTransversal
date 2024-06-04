@@ -82,10 +82,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
 
         jtMaterias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Nombre", "Año"
@@ -194,10 +191,10 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
 
     private void jbGuardarInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarInscripcionActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jbGuardarInscripcionActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
 
