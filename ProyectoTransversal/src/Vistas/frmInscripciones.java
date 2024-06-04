@@ -4,17 +4,35 @@
  */
 package Vistas;
 
+import AccesoADatos.AlumnoData;
+import AccesoADatos.InscripcionData;
+import Entidades.Alumno;
+import Entidades.Materia;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author N
  */
 public class frmInscripciones extends javax.swing.JInternalFrame {
-
+    AlumnoData alumnoData = new AlumnoData();
+    InscripcionData inscripcionData = new InscripcionData();
+    DefaultTableModel modelo = new DefaultTableModel();
+    
+    
     /**
      * Creates new form AbmInscripciones
      */
     public frmInscripciones() {
         initComponents();
+        jtMaterias.setModel(modelo);
+        cargarAlumnos();
+    }
+    
+    private void cargarAlumnos(){
+        List<Alumno> alumnos = alumnoData.listarAlumnos();
+        alumnos.forEach(alumno ->jcbAlumno.addItem(alumno.toString()));
     }
 
     /**
@@ -36,16 +54,27 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
         jtMaterias = new javax.swing.JTable();
         jbGuardarInscripcion = new javax.swing.JButton();
         jbBorrarInscripcionMateriaAlumno = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jbSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jlAlumno.setText("Alumno");
 
         jcbAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbAlumno.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbAlumnoItemStateChanged(evt);
+            }
+        });
 
         bgFiltroMaterias.add(jrbMateriasInscriptas);
+        jrbMateriasInscriptas.setSelected(true);
         jrbMateriasInscriptas.setText("Materias Inscriptas");
+        jrbMateriasInscriptas.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jrbMateriasInscriptasStateChanged(evt);
+            }
+        });
 
         bgFiltroMaterias.add(jrbMateriasNoInscriptas);
         jrbMateriasNoInscriptas.setText("Materias no inscriptas");
@@ -89,11 +118,16 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
         });
 
         jbBorrarInscripcionMateriaAlumno.setText("Anular Inscripcion");
-
-        jButton3.setText("Salir");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jbBorrarInscripcionMateriaAlumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jbBorrarInscripcionMateriaAlumnoActionPerformed(evt);
+            }
+        });
+
+        jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
             }
         });
 
@@ -119,7 +153,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jbBorrarInscripcionMateriaAlumno)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addComponent(jbSalir)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -139,7 +173,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbGuardarInscripcion)
                     .addComponent(jbBorrarInscripcionMateriaAlumno)
-                    .addComponent(jButton3))
+                    .addComponent(jbSalir))
                 .addContainerGap())
         );
 
@@ -161,11 +195,50 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jbGuardarInscripcionActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jbSalirActionPerformed
 
+    //TODO: OBTENER ID ALUMNO
+    private void jcbAlumnoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbAlumnoItemStateChanged
+        llenarTabla();
+    }//GEN-LAST:event_jcbAlumnoItemStateChanged
+
+    private void jrbMateriasInscriptasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jrbMateriasInscriptasStateChanged
+        llenarTabla();
+    }//GEN-LAST:event_jrbMateriasInscriptasStateChanged
+
+    private void jbBorrarInscripcionMateriaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBorrarInscripcionMateriaAlumnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbBorrarInscripcionMateriaAlumnoActionPerformed
+    
+    private void limpiarTabla(){
+        for (int i = modelo.getRowCount(); i>0; i--)
+            modelo.removeRow(1);
+    }
+    
+    private void llenarTabla(){
+        limpiarTabla();
+        List<Materia> materias;
+        Alumno alumno = new Alumno((String)jcbAlumno.getSelectedItem());
+        
+        if (jrbMateriasInscriptas.isSelected()){
+            materias = inscripcionData.obtenerMateriasCursadas(alumno.getIdAlumno());
+        }else{
+            materias = inscripcionData.obtenerMateriasNOCursadas(alumno.getIdAlumno());
+        }
+
+        for(Materia m: materias) {
+        modelo.addRow(new Object[]{
+            m.getIdMateria(),
+            m.getNombre(),
+            m.getAnioMateria()
+        });
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -204,11 +277,11 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bgFiltroMaterias;
-    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbBorrarInscripcionMateriaAlumno;
     private javax.swing.JButton jbGuardarInscripcion;
+    private javax.swing.JButton jbSalir;
     private javax.swing.JComboBox<String> jcbAlumno;
     private javax.swing.JLabel jlAlumno;
     private javax.swing.JRadioButton jrbMateriasInscriptas;

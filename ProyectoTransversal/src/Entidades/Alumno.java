@@ -1,6 +1,8 @@
 package Entidades;
 
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Alumno {
     private int idAlumno;
@@ -24,6 +26,21 @@ public class Alumno {
         this.nombre = nombre;
         this.fechaNac = fechaNac;
         this.activo = activo;
+    }
+    
+    // Constructor from string
+    public Alumno(String str) {
+        Pattern pattern = Pattern.compile("Alumno\\{idAlumno=(\\d+), apellido=(.+), nombre=(.+), fechaNac=(\\d{4}-\\d{2}-\\d{2}), activo=(true|false)\\}");
+        Matcher matcher = pattern.matcher(str);
+        if (matcher.matches()) {
+            this.idAlumno = Integer.parseInt(matcher.group(1));
+            this.apellido = matcher.group(2);
+            this.nombre = matcher.group(3);
+            this.fechaNac = LocalDate.parse(matcher.group(4)); // Assuming the date format is yyyy-MM-dd
+            this.activo = Boolean.parseBoolean(matcher.group(5));
+        } else {
+            throw new IllegalArgumentException("Invalid Alumno string format");
+        }
     }
     
     public int getIdAlumno(){
