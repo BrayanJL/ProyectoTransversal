@@ -56,11 +56,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jdpMenuPrincipal.setLayout(jdpMenuPrincipalLayout);
         jdpMenuPrincipalLayout.setHorizontalGroup(
             jdpMenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 574, Short.MAX_VALUE)
+            .addGap(0, 871, Short.MAX_VALUE)
         );
         jdpMenuPrincipalLayout.setVerticalGroup(
             jdpMenuPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 478, Short.MAX_VALUE)
+            .addGap(0, 549, Short.MAX_VALUE)
         );
 
         jmAlumno.setText("Alumno");

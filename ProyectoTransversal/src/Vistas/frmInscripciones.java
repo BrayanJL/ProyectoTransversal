@@ -36,7 +36,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
     }
     
     private void cargarAlumnos(){
-        List<Alumno> alumnos = alumnoData.listarAlumnos();
+        List<Alumno> alumnos = alumnoData.listarAlumnosActivos();
         alumnos.forEach(alumno ->jcbAlumno.addItem(alumno.toString()));
     }
 
@@ -169,7 +169,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
                     .addComponent(jrbMateriasInscriptas)
                     .addComponent(jrbMateriasNoInscriptas))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbGuardarInscripcion)
@@ -193,25 +193,24 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbGuardarInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarInscripcionActionPerformed
-        // TODO add your handling code here:
-        
         int fila = jtMaterias.getSelectedRow();
-        int id = (int)jtMaterias.getValueAt(fila, 0);
         
         if (fila != -1 && jrbMateriasNoInscriptas.isSelected()){
-            Materia materia = materiaData.buscarMateria(id);
+            int idMateria = (int)jtMaterias.getValueAt(fila, 0);
+            Materia materia = materiaData.buscarMateria(idMateria);
             Alumno alumno = new Alumno((String)jcbAlumno.getSelectedItem());
 
             Inscripcion inscripcion = new Inscripcion(alumno,materia);
             inscripcionData.guardarInscripcion(inscripcion);
         }
+        limpiarTabla();
+        llenarTabla();
     }//GEN-LAST:event_jbGuardarInscripcionActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
 
-    //TODO: OBTENER ID ALUMNO
     private void jcbAlumnoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbAlumnoItemStateChanged
         llenarTabla();
     }//GEN-LAST:event_jcbAlumnoItemStateChanged
@@ -221,7 +220,15 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jrbMateriasInscriptasStateChanged
 
     private void jbBorrarInscripcionMateriaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBorrarInscripcionMateriaAlumnoActionPerformed
-        // TODO add your handling code here:
+        int fila = jtMaterias.getSelectedRow();
+        
+        if (fila != -1 && jrbMateriasInscriptas.isSelected()){
+            int idMateria = (int)jtMaterias.getValueAt(fila, 0);
+            Alumno alumno = new Alumno((String)jcbAlumno.getSelectedItem());
+            inscripcionData.borrarInscripcionMateriaAlumno(alumno.getIdAlumno(),idMateria);
+        }
+        limpiarTabla();
+        llenarTabla();
     }//GEN-LAST:event_jbBorrarInscripcionMateriaAlumnoActionPerformed
     
     private void limpiarTabla(){
@@ -232,21 +239,25 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
     private void llenarTabla(){
         limpiarTabla();
         List<Materia> materias;
-        Alumno alumno = new Alumno((String)jcbAlumno.getSelectedItem());
+        String alumnoString = (String)jcbAlumno.getSelectedItem();
         
-        if (jrbMateriasInscriptas.isSelected()){
-            materias = inscripcionData.obtenerMateriasCursadas(alumno.getIdAlumno());
-        }else{
-            materias = inscripcionData.obtenerMateriasNOCursadas(alumno.getIdAlumno());
-        }
+        if (alumnoString!=null && !alumnoString.isEmpty()){
+            Alumno alumno = new Alumno(alumnoString);
 
-        for(Materia m: materias) {
-            modelo.addRow(new Object[]{
-                m.getIdMateria(),
-                m.getNombre(),
-                m.getAnioMateria()
-            });
-            
+            if (jrbMateriasInscriptas.isSelected()){
+                materias = inscripcionData.obtenerMateriasCursadas(alumno.getIdAlumno());
+            }else{
+                materias = inscripcionData.obtenerMateriasNOCursadas(alumno.getIdAlumno());
+            }
+
+            for(Materia m: materias) {
+                modelo.addRow(new Object[]{
+                    m.getIdMateria(),
+                    m.getNombre(),
+                    m.getAnioMateria()
+                });
+
+            }
         }
     }
     

@@ -30,14 +30,15 @@ public class Alumno {
     
     // Constructor from string
     public Alumno(String str) {
-        Pattern pattern = Pattern.compile("Alumno\\{idAlumno=(\\d+), apellido=(.+), nombre=(.+), fechaNac=(\\d{4}-\\d{2}-\\d{2}), activo=(true|false)\\}");
+        Pattern pattern = Pattern.compile("Alumno\\{idAlumno=(\\d+), dni=(\\d+), apellido=(.+), nombre=(.+), fechaNac=(\\d{4}-\\d{2}-\\d{2}), activo=(true|false)\\}");
         Matcher matcher = pattern.matcher(str);
         if (matcher.matches()) {
             this.idAlumno = Integer.parseInt(matcher.group(1));
-            this.apellido = matcher.group(2);
-            this.nombre = matcher.group(3);
-            this.fechaNac = LocalDate.parse(matcher.group(4)); // Assuming the date format is yyyy-MM-dd
-            this.activo = Boolean.parseBoolean(matcher.group(5));
+            this.dni = Integer.parseInt(matcher.group(2));
+            this.apellido = matcher.group(3);
+            this.nombre = matcher.group(4);
+            this.fechaNac = LocalDate.parse(matcher.group(5)); // Assuming the date format is yyyy-MM-dd
+            this.activo = Boolean.parseBoolean(matcher.group(6));
         } else {
             throw new IllegalArgumentException("Invalid Alumno string format");
         }
@@ -81,6 +82,6 @@ public class Alumno {
     }
     @Override
     public String toString() {
-        return "Alumno{" + "idAlumno=" + idAlumno + ", apellido=" + apellido + ", nombre=" + nombre + ", fechaNac=" + fechaNac + ", activo=" + activo + '}';
+        return "Alumno{" + "idAlumno=" + idAlumno + ", dni="+ dni + ", apellido=" + apellido + ", nombre=" + nombre + ", fechaNac=" + fechaNac + ", activo=" + activo + '}';
     }
 }
