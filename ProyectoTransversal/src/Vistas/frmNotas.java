@@ -4,19 +4,41 @@
  */
 package Vistas;
 
+import AccesoADatos.AlumnoData;
+import AccesoADatos.InscripcionData;
+import AccesoADatos.MateriaData;
+import Entidades.Alumno;
+import Entidades.Inscripcion;
+import Entidades.Materia;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author N
  */
 public class frmNotas extends javax.swing.JInternalFrame {
-
+    AlumnoData alumnoData = new AlumnoData();
+    InscripcionData inscripcionData = new InscripcionData();
+    MateriaData materiaData = new MateriaData();
+    
+    DefaultTableModel modelo;
+    
     /**
      * Creates new form frmNotas
      */
     public frmNotas() {
         initComponents();
+        modelo = (DefaultTableModel) jtNotas.getModel();
+        cargarAlumnos();
     }
 
+    private void cargarAlumnos(){
+        List<Alumno> alumnos = alumnoData.listarAlumnos();
+        alumnos.forEach(alumno ->jcbAlumno.addItem(alumno.toString()));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,17 +52,21 @@ public class frmNotas extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jcbAlumno = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jtNotas = new javax.swing.JTable();
+        jbGuardar = new javax.swing.JButton();
+        jbSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Alumno");
 
-        jcbAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbAlumno.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbAlumnoItemStateChanged(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtNotas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -66,16 +92,21 @@ public class frmNotas extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jtNotas.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(jtNotas);
+        jtNotas.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        jButton1.setText("Guardar");
-
-        jButton2.setText("Salir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jbGuardar.setText("Guardar");
+        jbGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jbGuardarActionPerformed(evt);
+            }
+        });
+
+        jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSalirActionPerformed(evt);
             }
         });
 
@@ -92,9 +123,9 @@ public class frmNotas extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jcbAlumno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(jbGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addComponent(jbSalir)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -108,8 +139,8 @@ public class frmNotas extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jbGuardar)
+                    .addComponent(jbSalir))
                 .addContainerGap())
         );
 
@@ -127,11 +158,63 @@ public class frmNotas extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jbSalirActionPerformed
 
+    private void jcbAlumnoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbAlumnoItemStateChanged
+        llenarTabla();
+    }//GEN-LAST:event_jcbAlumnoItemStateChanged
+
+    private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
+        int fila = jtNotas.getSelectedRow();
+        
+        if (fila != -1 && validarNota()){
+            int idMateria = (int)jtNotas.getValueAt(fila, 0);
+            double nota = Double.parseDouble(String.valueOf(jtNotas.getValueAt(fila, 2)));
+            Materia materia = materiaData.buscarMateria(idMateria);
+            Alumno alumno = new Alumno((String)jcbAlumno.getSelectedItem());
+            
+            inscripcionData.actualizarNota(alumno.getIdAlumno(), materia.getIdMateria(), nota);
+        }
+        
+    }//GEN-LAST:event_jbGuardarActionPerformed
+
+    private boolean validarNota() {
+        int fila = jtNotas.getSelectedRow();
+        double nota = Double.parseDouble(String.valueOf(jtNotas.getValueAt(fila, 2)));
+        
+        if (nota < 0 || nota > 10) {
+            JOptionPane.showMessageDialog(null, "Debe ser una nota entre 0 y 10");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void limpiarTabla(){
+        for (int i = modelo.getRowCount(); i>0; i--)
+            modelo.removeRow(0);
+    }
+    
+    private void llenarTabla(){
+        limpiarTabla();
+        List<Inscripcion> inscripcion;
+        Alumno alumno = new Alumno((String)jcbAlumno.getSelectedItem());
+        
+        inscripcion = inscripcionData.obtenerInscripcionesPorAlumno(alumno.getIdAlumno());
+
+        for(Inscripcion i: inscripcion) {
+            modelo.addRow(new Object[]{
+                i.getIdMateria(),
+                i.getAlumno().getNombre(),
+                i.getNota()
+            });
+            
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -168,12 +251,12 @@ public class frmNotas extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbGuardar;
+    private javax.swing.JButton jbSalir;
     private javax.swing.JComboBox<String> jcbAlumno;
+    private javax.swing.JTable jtNotas;
     // End of variables declaration//GEN-END:variables
 }
