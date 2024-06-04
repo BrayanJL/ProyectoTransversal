@@ -1,22 +1,39 @@
 package Entidades;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Materia {
     private int idMateria;
-    private String Nombre;
-    private int anioMateria;
+    private String nombre;
+    private int añoMateria;
     private boolean activo;
     
     public Materia(){}
     public Materia(int idMateria, String Nombre, int anioMateria, boolean activo) {
         this.idMateria = idMateria;
-        this.Nombre = Nombre;
-        this.anioMateria = anioMateria;
+        this.nombre = Nombre;
+        this.añoMateria = anioMateria;
         this.activo = activo;
     }
     public Materia(String Nombre, int anioMateria, boolean activo) {
-        this.Nombre = Nombre;
-        this.anioMateria = anioMateria;
+        this.nombre = Nombre;
+        this.añoMateria = anioMateria;
         this.activo = activo;
+    }
+    
+    // Constructor from string
+    public Materia(String str) {
+        Pattern pattern = Pattern.compile("Materia\\{idMateria=(\\d+), nombre=(.+), añoMateria=(\\d+), activo=(true|false)\\}");
+        Matcher matcher = pattern.matcher(str);
+        if (matcher.matches()) {
+            this.idMateria = Integer.parseInt(matcher.group(1));
+            this.nombre = matcher.group(2);
+            this.añoMateria = Integer.parseInt(matcher.group(3));
+            this.activo = Boolean.parseBoolean(matcher.group(4));
+        } else {
+            throw new IllegalArgumentException("Invalid Materia string format");
+        }
     }
     
     public int getIdMateria() {
@@ -26,16 +43,16 @@ public class Materia {
         this.idMateria = idMateria;
     }
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
     public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+        this.nombre = Nombre;
     }
     public int getAnioMateria() {
-        return anioMateria;
+        return añoMateria;
     }
     public void setAnioMateria(int anioMateria) {
-        this.anioMateria = anioMateria;
+        this.añoMateria = anioMateria;
     }
     public boolean isActivo() {
         return activo;
@@ -45,6 +62,6 @@ public class Materia {
     }
     @Override
     public String toString() {
-        return "Materia{" + "idMateria=" + idMateria + ", Nombre=" + Nombre + ", anioMateria=" + anioMateria + ", activo=" + activo + '}';
+        return "Materia{" + "idMateria=" + idMateria + ", nombre=" + nombre + ", añoMateria=" + añoMateria + ", activo=" + activo + '}';
     }
 }

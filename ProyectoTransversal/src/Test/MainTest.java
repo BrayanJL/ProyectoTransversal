@@ -201,7 +201,7 @@ public class MainTest {
         System.out.println("/////// obtener alumnos por materia:");
         System.out.println("");
         
-        for (Alumno alumno : insData.obtenerAlumnosXMateria(materia4.getIdMateria())) {
+        for (Alumno alumno : insData.obtenerAlumnosPorMateria(materia4.getIdMateria())) {
             System.out.println(alumno.toString());
         }
         

@@ -199,12 +199,12 @@ public class InscripcionData {
         return materias;
     }
     
-    public List<Alumno> obtenerAlumnosXMateria(int idMateria) {
+    public List<Alumno> obtenerAlumnosPorMateria(int idMateria) {
         List<Alumno> alumnos = new ArrayList<>();
         
         try {
             String sql = "SELECT * FROM alumno "
-                    + "WHERE idAlumno "
+                    + "WHERE estado = 1 AND idAlumno "
                     + "IN (SELECT inscripcion.idAlumno FROM inscripcion WHERE inscripcion.idMateria = ? )" ;
             
             PreparedStatement ps = con.prepareStatement(sql);

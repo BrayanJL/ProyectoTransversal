@@ -33,6 +33,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
         //jtMaterias.setModel(modelo);
         modelo = (DefaultTableModel) jtMaterias.getModel();
         cargarAlumnos();
+        llenarTabla();
     }
     
     private void cargarAlumnos(){
@@ -203,7 +204,6 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
             Inscripcion inscripcion = new Inscripcion(alumno,materia);
             inscripcionData.guardarInscripcion(inscripcion);
         }
-        limpiarTabla();
         llenarTabla();
     }//GEN-LAST:event_jbGuardarInscripcionActionPerformed
 

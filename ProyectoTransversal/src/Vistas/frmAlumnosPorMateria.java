@@ -4,19 +4,58 @@
  */
 package Vistas;
 
+import AccesoADatos.InscripcionData;
+import AccesoADatos.MateriaData;
+import Entidades.Alumno;
+import Entidades.Materia;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author N
  */
 public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
 
+    MateriaData materiaData = new MateriaData();
+    DefaultTableModel modelo;
+    InscripcionData inscripcionData = new InscripcionData();
     /**
      * Creates new form frmAlumnosPorMateria
      */
     public frmAlumnosPorMateria() {
         initComponents();
+        modelo = (DefaultTableModel) jtAlumnos.getModel();
+        cargarMaterias();
+        llenarTabla();
     }
 
+    private void limpiarTabla(){
+        for (int i = modelo.getRowCount(); i>0; i--)
+            modelo.removeRow(0);
+    }
+    
+    private void llenarTabla(){
+        limpiarTabla();
+        List<Alumno> alumnos;
+        String materiaString = (String)jcbMateria.getSelectedItem();
+        
+        if (materiaString!=null && !materiaString.isEmpty()){
+            Materia materia = new Materia(materiaString);
+            
+            alumnos = inscripcionData.obtenerAlumnosPorMateria(materia.getIdMateria());
+
+            for(Alumno a: alumnos) {
+                modelo.addRow(new Object[]{
+                    a.getIdAlumno(),
+                    a.getDni(),
+                    a.getApellido(),
+                    a.getNombre()
+                });
+            }
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,21 +69,22 @@ public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
         jlMateria = new javax.swing.JLabel();
         jcbMateria = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jtAlumnos = new javax.swing.JTable();
+        jbSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jlMateria.setText("Materia");
 
-        jcbMateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbMateria.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbMateriaItemStateChanged(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID", "DNI", "Apellido", "Nombre"
@@ -54,7 +94,7 @@ public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -65,12 +105,12 @@ public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtAlumnos);
 
-        jButton1.setText("Salir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jbSalir.setText("Salir");
+        jbSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jbSalirActionPerformed(evt);
             }
         });
 
@@ -88,7 +128,7 @@ public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
                         .addComponent(jcbMateria, 0, 544, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jbSalir)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -101,7 +141,7 @@ public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(jbSalir)
                 .addContainerGap())
         );
 
@@ -119,10 +159,20 @@ public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jbSalirActionPerformed
+
+    private void cargarMaterias(){
+        List<Materia> materias = materiaData.listarMateriasActivas();
+        materias.forEach(materia -> jcbMateria.addItem(materia.toString()));
+    }
+    
+    private void jcbMateriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbMateriaItemStateChanged
+        // TODO add your handling code here:
+        llenarTabla();
+    }//GEN-LAST:event_jcbMateriaItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -160,11 +210,11 @@ public class frmAlumnosPorMateria extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbSalir;
     private javax.swing.JComboBox<String> jcbMateria;
     private javax.swing.JLabel jlMateria;
+    private javax.swing.JTable jtAlumnos;
     // End of variables declaration//GEN-END:variables
 }
