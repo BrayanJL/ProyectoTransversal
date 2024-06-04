@@ -190,10 +190,10 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
 
     private void jbGuardarInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarInscripcionActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jbGuardarInscripcionActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
 
@@ -212,7 +212,7 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
     
     private void limpiarTabla(){
         for (int i = modelo.getRowCount(); i>0; i--)
-            modelo.removeRow(1);
+            modelo.removeRow(0);
     }
     
     private void llenarTabla(){
