@@ -6,7 +6,9 @@ package Vistas;
 
 import AccesoADatos.AlumnoData;
 import AccesoADatos.InscripcionData;
+import AccesoADatos.MateriaData;
 import Entidades.Alumno;
+import Entidades.Inscripcion;
 import Entidades.Materia;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +21,7 @@ import javax.swing.table.TableModel;
 public class frmInscripciones extends javax.swing.JInternalFrame {
     AlumnoData alumnoData = new AlumnoData();
     InscripcionData inscripcionData = new InscripcionData();
+    MateriaData materiaData = new MateriaData();
     DefaultTableModel modelo;
     
     
@@ -192,6 +195,16 @@ public class frmInscripciones extends javax.swing.JInternalFrame {
     private void jbGuardarInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarInscripcionActionPerformed
         // TODO add your handling code here:
         
+        int fila = jtMaterias.getSelectedRow();
+        int id = (int)jtMaterias.getValueAt(fila, 0);
+        
+        if (fila != -1 && jrbMateriasNoInscriptas.isSelected()){
+            Materia materia = materiaData.buscarMateria(id);
+            Alumno alumno = new Alumno((String)jcbAlumno.getSelectedItem());
+
+            Inscripcion inscripcion = new Inscripcion(alumno,materia);
+            inscripcionData.guardarInscripcion(inscripcion);
+        }
     }//GEN-LAST:event_jbGuardarInscripcionActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
