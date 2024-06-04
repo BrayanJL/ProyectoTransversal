@@ -90,7 +90,7 @@ public class AlumnoData {
                 alumno.setFechaNac(rs.getDate("fechaNacimiento").toLocalDate());
                 alumno.setActivo(rs.getBoolean("estado"));
                 
-            } else JOptionPane.showMessageDialog(null, "No existe alumno con el DNI que solicito");
+            }// else JOptionPane.showMessageDialog(null, "No existe alumno con el DNI que solicito");
             ps.close();
             
         } catch (SQLException e) {

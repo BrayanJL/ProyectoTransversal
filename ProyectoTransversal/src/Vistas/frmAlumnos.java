@@ -200,33 +200,30 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        //if (validacionAlumno("Alta")) {
+        if (validacionAlumno("Alta")) {
             setearAlumnoConDatosDeFormulario();
             alumnoData.guardarAlumno(alumnoActual);
             limpiarCampos();
-        //}
+        }
     }//GEN-LAST:event_jbNuevoActionPerformed
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
-        // TODO add your handling code here:
-        //if (validacionAlumno("Baja")) {
+        if (validacionAlumno("Baja")) {
             setearAlumnoConDatosDeFormulario();
             alumnoData.eliminarAlumno(alumnoActual.getDni());
             limpiarCampos();
-        //}
+        }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
     private void jbGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbGuardarActionPerformed
-        // TODO add your handling code here:
-        //if (validacionAlumno("Modificar")) {
+        if (validacionAlumno("Modificar")) {
             setearAlumnoConDatosDeFormulario();
             alumnoData.modificarAlumno(alumnoActual);
             limpiarCampos();
-        //}
+        }
     }//GEN-LAST:event_jbGuardarActionPerformed
 
     private void jbSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalirActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jbSalirActionPerformed
 
@@ -382,7 +379,7 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
  
     private boolean validacionApellido(){
         if (jtfApellido.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Campo vacío.");
+            JOptionPane.showMessageDialog(this, "Campo Apellido vacío.");
             jtfApellido.requestFocusInWindow();
             return false;
         }
@@ -390,20 +387,25 @@ public class frmAlumnos extends javax.swing.JInternalFrame {
     }
     private boolean validacionNombre(){
         if (jtfNombre.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Campo vacío.");
+            JOptionPane.showMessageDialog(this, "Campo Nombre vacío.");
             jtfNombre.requestFocusInWindow();
             return false;
         }
         return true;
     }
     private boolean validacionFechaNacimiento(){
-        return true;
+        if (jdFecha.getDate() != null){
+            return true;
+        }
+        JOptionPane.showMessageDialog(this, "Campo Fecha vacío.");
+        jdFecha.requestFocusInWindow();
+        return false;
     }
     
     private boolean validacionDni() {
         
         if (jtfDocumento.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Campo vacío.");
+            JOptionPane.showMessageDialog(this, "Campo DNI vacío.");
             jtfDocumento.requestFocusInWindow();
             return false;
         }
